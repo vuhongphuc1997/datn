@@ -1,0 +1,216 @@
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Quản lý danh mục sản phẩm</h2><br>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Danh mục</li>
+            <li class="breadcrumb-item"><a href="#!/listdanhmuc">Danh mục sản phẩm</a></li>
+        </ol>
+    </nav>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-table me-1"></i>
+                Danh sách danh mục sản phẩm
+            </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end" data-bs-toggle="modal"
+                 data-bs-target="#addModal">
+                <button class="btn btn-primary" type="button">Thêm</button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                <input type="text" ng-model="searchText" placeholder="Tìm kiếm..." class="form-control me-2"/>
+                <!--                <select ng-model="selectedIdCha" class="form-select me-2" ng-change="pager.updateItems()">-->
+                <!--                    <option value="">Tất cả sản phẩm</option>-->
+                <!--                    <option value="1">Nam</option>-->
+                <!--                    <option value="2">Nữ</option>-->
+                <!--                    <option value="3">Khác</option>-->
+                <!--                </select>-->
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Dành cho</th>
+                    <th>Tên</th>
+                    <th>Mô tả</th>
+                    <th>Trạng thái</th>
+                    <th>Chức năng</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in pager.items | filter: searchText">
+                    <td>{{$index + 1 + (pager.page * pager.size)}}</td>
+                    <td>
+                        <span ng-if="!item.idCha">Không có</span> <!-- Nếu không có danh mục cha -->
+                        <span ng-if="item.idCha">{{getTenDanhMuc(item.idCha)}}</span> <!-- Lấy tên danh mục cha -->
+                    </td>
+                    <td>{{item.ten}}</td>
+                    <td>{{item.moTa}}</td>
+                    <td>
+                        <div class="badge"
+                             ng-class="{'bg-success': item.trangThai === 1, 'bg-danger': item.trangThai === 0, 'bg-secondary': item.trangThai === 2}">
+                            <span ng-if="item.trangThai === 1">Đang hoạt động</span>
+                            <span ng-if="item.trangThai === 0">Đang khóa</span>
+                            <span ng-if="item.trangThai === 2">Khác</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-xs">
+                            <button class="btn btn-link" type="button" ng-click="updateTrangThaiTo1(item)">
+                                <i class="fas fa-check icon-check"></i>
+                            </button>
+                            <button class="btn btn-link" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#editModal" ng-click="edit(item.id)">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                            <button class="btn btn-link" type="button" ng-click="updateTrangThaiTo2(item)">
+                                <i class="fas fa-times icon-close"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="panel-footer d-flex justify-content-between align-items-center">
+                <!-- Bộ chọn số lượng dữ liệu hiển thị -->
+                <div class="me-auto">
+                    <label for="pageSizeSelect" class="me-2">Hiển thị:</label>
+                    <select id="pageSizeSelect" ng-model="pager.size" ng-change="pager.updateItems()"
+                            class="form-select d-inline-block w-auto">
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+
+                <!-- Điều hướng trang -->
+                <div class="text-center">
+                    <button ng-click="pager.first()" class="btn btn-danger">
+                        <i class="fas fa-angle-double-left"></i>
+                    </button>
+                    <button ng-click="pager.prev()" class="btn btn-primary">
+                        <i class="fas fa-angle-left"></i>
+                    </button>
+                    <button class="btn btn-success">{{pager.page + 1}} of {{pager.count}}</button>
+                    <button ng-click="pager.next()" class="btn btn-primary">
+                        <i class="fas fa-angle-right"></i>
+                    </button>
+                    <button ng-click="pager.last()" class="btn btn-danger">
+                        <i class="fas fa-angle-double-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Thêm Danh Mục Mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="tenDanhMuc" class="form-label">Tên Danh Mục</label>
+                            <input type="text" class="form-control" id="tenDanhMuc" ng-model="formAdd.ten"
+                                   placeholder="Nhập tên danh mục">
+                        </div>
+                        <div class="mb-3">
+                            <label for="moTaDanhMuc" class="form-label">Mô Tả</label>
+                            <textarea class="form-control" id="moTaDanhMuc" ng-model="formAdd.moTa"
+                                      placeholder="Nhập mô tả danh mục"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="fz-14">
+                                Danh mục cha
+                                <span class="text-danger">(*)</span>
+                            </label>
+                            <div class="dropdown">
+                                <button class="btn btn-dropdown"
+                                        id="dropdown-basic-button-danhmuchoso"
+                                        ng-click="toggleDropdown()"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                    <span id="dropdown-title">Chọn danh mục cha</span>
+                                    <i class="bi bi-chevron-down" id="dropdown-arrow"></i>
+                                </button>
+
+                                <div class="dropdown-menu" id="dropdown-menu">
+                                    <!-- Cây danh mục-->
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" ng-click="create()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Chỉnh Sửa Danh Mục</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="tenDanhMucEdit" class="form-label">Tên Danh Mục</label>
+                            <input type="text" class="form-control" id="tenDanhMucEdit" ng-model="formEdit.ten"
+                                   placeholder="Nhập tên danh mục">
+                        </div>
+                        <div class="mb-3">
+                            <label for="moTaDanhMucEdit" class="form-label">Mô Tả</label>
+                            <textarea class="form-control" id="moTaDanhMucEdit" ng-model="formEdit.moTa"
+                                      placeholder="Nhập mô tả danh mục"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="fz-14">
+                                Danh mục cha
+                                <span class="text-danger">(*)</span>
+                            </label>
+                            <div class="dropdown">
+                                <button class="btn btn-dropdown"
+                                        id="dropdown-basic-button-danhmuchoso-edit"
+                                        ng-click="toggleDropdownEdit()"
+                                        aria-haspopup="true"
+                                        aria-expanded="false">
+                                <span id="dropdown-title-edit">
+                                    {{ formEdit.idCha ? getTenDanhMuc(formEdit.idCha) : 'Chọn danh mục cha' }}
+                                </span>
+                                    <i class="bi bi-chevron-down" id="dropdown-arrow-edit"></i>
+                                </button>
+
+                                <div class="dropdown-menu" id="dropdown-menu-edit">
+                                    <!-- Cây danh mục-->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" ng-click="update()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

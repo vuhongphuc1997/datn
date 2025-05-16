@@ -1,0 +1,262 @@
+
+/* Căn giữa thông báo ở giữa màn hình */
+#tokenWarning {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Căn giữa hoàn hảo */
+    width: 80%;  /* Kích thước của thông báo */
+    max-width: 600px;  /* Đảm bảo thông báo không quá rộng */
+    z-index: 1050; /* Đảm bảo nó hiển thị trên các phần tử khác */
+    display: none;  /* Ẩn thông báo theo mặc định */
+}
+
+/* Định dạng nút đóng thông báo */
+#closeTokenWarning {
+    background-color: #dc3545;  /* Màu đỏ */
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+#closeTokenWarning:hover {
+    background-color: #c82333;  /* Màu đỏ đậm khi hover */
+}
+
+/* Modal */
+.modal {
+    display: none; /* Ban đầu ẩn modal */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff; /* Nền mờ */
+    width: 600px; /* Chiều ngang modal là 600px */
+    height: 300px; /* Chiều dọc modal là 300px */
+    padding: 30px;
+    border-radius: 15px; /* Tăng độ cong của các góc */
+    z-index: 1000;
+}
+
+
+/* Nội dung Modal */
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-sizing: border-box;
+    height: 100%; /* Chiều cao của nội dung modal sẽ bằng chiều cao của modal */
+    overflow: auto; /* Thêm thanh cuộn nếu nội dung vượt quá chiều cao */
+}
+
+
+/* Tiêu đề và thông báo trong modal */
+.modal-content h3 {
+    margin-bottom: 15px;
+    font-size: 20px; /* Tăng kích thước tiêu đề */
+    color: #333; /* Màu tiêu đề */
+}
+
+.modal-content p {
+    margin-bottom: 30px; /* Tăng khoảng cách giữa nội dung và các nút */
+    font-size: 16px;
+    color: #555; /* Màu chữ nhạt hơn */
+}
+
+/* Sử dụng Flexbox để các nút nằm cùng một hàng */
+.modal-actions {
+    display: flex;
+    justify-content: center; /* Canh giữa các nút */
+    gap: 20px; /* Khoảng cách giữa các nút */
+}
+
+/* Nút Xác nhận */
+/* Nút Xác nhận */
+.btn-confirm {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 8px 20px; /* Giảm kích thước nút */
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px; /* Giảm kích thước chữ */
+    min-width: 100px; /* Đảm bảo nút đủ rộng */
+}
+
+/* Nút Hủy */
+.btn-cancel {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 8px 20px; /* Giảm kích thước nút */
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px; /* Giảm kích thước chữ */
+    min-width: 100px; /* Đảm bảo nút đủ rộng */
+}
+/* Sử dụng Flexbox để các nút nằm cùng một hàng */
+.modal-actions {
+    display: flex;
+    justify-content: center; /* Canh giữa các nút */
+    gap: 15px; /* Khoảng cách giữa các nút */
+    margin-top: 30px; /* Di chuyển các nút xuống dưới */
+}
+
+
+/* Hiệu ứng khi hover lên các nút */
+.btn-confirm:hover, .btn-cancel:hover {
+    opacity: 0.8;
+}
+
+#thumbnailImages {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Hiển thị thumbnail theo chiều dọc */
+    gap: 5px;
+}
+#thumbnailImagesWrapper {
+    overflow: hidden;  /* Ẩn thanh cuộn */
+}
+
+.thumbnail-img {
+    width: 80px;
+    height: auto;
+    cursor: pointer;
+    border: 2px solid #ccc;
+}
+/*/////////////// chujjj4/////////////////////////////*/
+#productName {
+    font-size: 26px;
+    font-weight: 500;
+}
+
+#productPrice{
+    font-size: 30px;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+#productSalePrice{
+    font-size: 32px;
+    font-weight: 700;
+    color: red;
+}
+.product-color{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* Ẩn radio gốc */
+input[type="radio"] {
+    display: none;
+}
+
+/* Tùy chỉnh giao diện radio */
+.custom-radio {
+    display: inline-block;
+    margin: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Hình vuông đại diện */
+.radio-label {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border: 2px solid black;
+    border-radius: 2px;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+/* Làm mờ phần tử khi bị vô hiệu hóa */
+.custom-radio.disabled,
+.custom-radio-circle.disabled {
+    opacity: 0.3;  /* Làm mờ phần tử */
+    pointer-events: none;  /* Tắt tương tác với phần tử */
+}
+
+/* Giao diện tùy chỉnh cho hình tròn */
+.custom-radio-circle {
+    display: inline-block;
+    margin: 2px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Hình tròn đại diện */
+.radio-circle {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 2px solid black;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+/* Khi được chọn */
+input[type="radio"]:checked + .radio-label {
+    outline: 3px solid black;
+    outline-offset: 2px;
+}
+
+input[type="radio"]:checked + .radio-circle{
+    outline: 3px solid black;
+    outline-offset: 2px;
+}
+
+/* Bỏ hiệu ứng hover */
+.custom-radio:hover .radio-label {
+    background-color: #f8f9fa;
+}
+
+.custom-radio-circle:hover .radio-circle {
+    border-color: #ccc; /* Không thay đổi khi hover */
+}
+
+.button-buy-product {
+    display: flex;
+    justify-content: space-between; /* Tùy chọn: phân bố đều các nút */
+}
+
+.button-buy-product button {
+    flex: 1; /* Mỗi button chiếm 50% chiều rộng của phần tử chứa */
+    height: 50px; /* Đảm bảo chiều cao của button */
+    margin-right: 10px; /* Khoảng cách giữa các nút */
+}
+
+.button-buy-product button:last-child {
+    margin-right: 0; /* Loại bỏ margin bên phải cho nút cuối cùng */
+}
+
+.button-add-wislist{
+    display: flex;
+    justify-content: center; /* Tùy chọn: phân bố đều các nút */
+    margin-top: 10px;
+}
+.button-add-wislist button {
+    height: 50px; /* Đảm bảo chiều cao của button */
+    width: 70%;
+    border: 1px solid black;
+}
+
+/* Điều chỉnh khoảng cách giữa các chữ */
+.product-color a {
+    margin-left: 10px;
+    text-decoration: underline;
+    color: gray; /* Hoặc màu bạn muốn */
+    font-weight: 200;
+}
+
+/* Tùy chỉnh màu và bỏ gạch chân */
+.product-color a:hover {
+    text-decoration: underline;
+    color: gray; /* Hoặc màu bạn muốn */
+    font-weight: 200;
+}
+
+/* Modal image customization */

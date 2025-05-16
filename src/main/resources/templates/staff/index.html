@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="vi-VN" dir="LTR"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <title>Home - Manage</title>
+    <link rel="stylesheet" href="../staff/css/css.css">
+    <!-- SweetAlert2 CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.2/dist/sweetalert2.all.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--    &#45;&#45;&#45;&#45; angular -->
+    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!-- Thêm Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        td {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        /*////// anh sản phẩm*/
+        #previewContainer {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .image-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 100%;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+
+        .image-wrapper img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .delete-icon {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-list-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999999;
+            padding: 0;
+            border: 1px solid #ccc;
+        }
+
+        .product-list-modal .dialog-bg {
+            background: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .product-list-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 15px;
+            border: 1px solid rgba(0, 0, 0, .2);
+            border-radius: .3rem;
+        }
+
+        .product-list-modal-content .list-body {
+            max-height: 500px;
+            overflow: auto;
+            overflow-x: hidden
+        }
+
+        .nav-cont {
+        / / border-bottom: 1 px solid #dee2e6;
+        }
+
+        .nav-tab-slide {
+            overflow-x: auto;
+            overflow-y: hidden;
+            max-width: 100%;
+        }
+
+        .tabs-bill {
+            max-width: 100%;
+            overflow-y: hidden;
+            overflow-x: auto;
+            border-bottom: 0;
+        }
+
+        /* width */
+        .tabs-bill::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Track */
+        .tabs-bill::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            display: none;
+        }
+
+        .tabs-bill li {
+
+            position: relative;
+        }
+
+        .tabs-bill li button {
+            padding-right: 30px;
+            color: #000;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .tabs-bill li button.active {
+            font-weight: 500;
+        }
+
+        .tabs-bill li button.active:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            z-index: 9999;
+            width: 100%;
+            height: 1px;
+            background: #ffffff;
+        }
+
+        .tabs-bill li span {
+            position: absolute;
+            top: 5px;
+            right: 7px;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .tab-content-bill {
+            padding: 20px 15px;
+            border: 1px solid #dee2e6;
+            border-radius: 0 0 5px 5px;
+            margin-top: -1px;
+        }
+
+        .nav-cont .btn:disabled,
+        .nav-cont .btn[disabled] {
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .tab-content-bill .form-control {
+            font-size: 13px;
+        }
+
+        .done-bill {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .position-relative {
+            position: relative;
+        }
+
+        .form-control[type="password"] {
+            width: 100%;
+            padding-right: 35px; /* Dành không gian cho biểu tượng mắt */
+        }
+
+        /* Tạo hiệu ứng cho biểu tượng mắt */
+        .bi-eye, .bi-eye-slash {
+            font-size: 1.2em;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .bi-eye:hover, .bi-eye-slash:hover {
+            transform: scale(1.2); /* Phóng to biểu tượng khi hover */
+            color: #888; /* Thay đổi màu sắc khi hover */
+        }
+
+        #togglePassword, #toggleRepassword {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        /* Style for the dropdown button */
+        .btn-dropdown {
+            background-color: #f8f9fa;
+            color: #495057;
+            border: 1px solid #ced4da;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .btn-dropdown:focus {
+            outline: none;
+            border-color: #0056b3;
+        }
+
+        /* Dropdown menu styles */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 999;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        /* Style for tree structure */
+        .treeview-item {
+            padding-left: 20px;
+            cursor: pointer;
+        }
+
+        .treeview-item .treeview-item {
+            padding-left: 20px;
+        }
+
+        /* Active selection style */
+        .treeview-item.selected {
+            background-color: #f1f1f1;
+        }
+
+        .fz-14 {
+            font-size: 14px;
+        }
+
+        .text-danger {
+            color: red;
+        }
+
+        /* Cấu trúc chung */
+        .fz-14 {
+            font-size: 14px;
+        }
+
+        .text-danger {
+            color: #d9534f;
+        }
+
+        /* Style cho Button Dropdown */
+        .btn-dropdown {
+            position: relative;
+            width: 100%;
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            color: #495057;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .btn-dropdown:hover {
+            background-color: #e2e6ea;
+            border-color: #adb5bd;
+        }
+
+        /* Style cho mũi tên */
+        .bi-chevron-down, .bi-chevron-up {
+            font-size: 16px;
+            color: #495057;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-dropdown i {
+            margin-left: 10px;
+        }
+
+        /* Style cho Menu Dropdown */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: #ffffff;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 10px;
+        }
+
+        /* Khi menu được hiển thị */
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        /* Style cho các mục trong cây danh mục */
+        .treeview-item {
+            padding: 8px 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .treeview-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .treeview-item i {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        /* Style cho các mục danh mục con */
+        .sub-categories {
+            margin-left: 20px;
+        }
+
+        /* Style khi danh mục con được ẩn hoặc hiển thị */
+        .sub-categories.show {
+            display: block;
+        }
+
+        /* Style cho trường hợp thông báo lỗi */
+        .invalid-feedback {
+            color: #d9534f;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* Chỉnh sửa hiệu ứng cho các phần tử khi đang load */
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #userInfoForm {
+            display: flex;
+            flex-wrap: wrap;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        #userInfoForm .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #userInfoForm .col-md-6 {
+            width: 48%;
+            margin-bottom: 20px;
+        }
+
+        #avatarContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        #avatar {
+            width: 200px; /* Điều chỉnh chiều rộng */
+            height: 300px; /* Điều chỉnh chiều cao */
+            object-fit: cover; /* Đảm bảo ảnh không bị méo và chiếm toàn bộ không gian */
+            border-radius: 10px; /* Để tạo các góc bo tròn (có thể thay đổi hoặc bỏ) */
+        }
+
+
+        form .mb-3 {
+            margin-bottom: 15px;
+        }
+
+        input[type="file"] {
+            cursor: pointer;
+        }
+        /* Bố cục cho hộp tìm kiếm */
+        .search-box {
+            position: relative;
+            width: 50%; /* Đặt độ rộng tùy chỉnh */
+            padding-top: 10px;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: #aaa;
+            font-size: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 10px 8px 35px; /* Tạo khoảng cách với biểu tượng */
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+
+        #tableproductlist2 .dropdown-item{
+            font-size: 12px;
+        }
+        #tableproductlist2 .dropdown-item:focus, #tableproductlist2 .dropdown-item:hover{
+            background-color: #e9ecef;
+        }
+
+    </style>
+</head>
+
+<body class="sb-nav-fixed" ng-app="admin-app">
+
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark"
+     th:include="staff/layout/_nav :: body"></nav>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav" th:include="staff/layout/_menu :: body"></div>
+    <div id="layoutSidenav_content">
+        <main style="background-color:gainsboro; padding: 20px 20px;">
+            <div ng-view style="background-color:white; "></div>
+            <!-- Modal -->
+            <div class="modal fade" id="userInfoModal" tabindex="-1" aria-labelledby="userInfoModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg"> <!-- Điều chỉnh kích thước modal ở đây (modal-lg, modal-sm, hoặc custom kích thước) -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="userInfoModalLabel">Thông tin người dùng</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form thông tin người dùng -->
+                            <form id="formInfo" class="row">
+                                <!-- Phần nhập thông tin (nửa trái) -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label">Tên đăng nhập:</label>
+                                        <input type="text" class="form-control" id="username" disabled>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Tên:</label>
+                                        <input type="text" class="form-control" id="name">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email:</label>
+                                        <input type="email" class="form-control" id="email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label">Số điện thoại:</label>
+                                        <input type="text" class="form-control" id="phone">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="cccd" class="form-label">CCCD:</label>
+                                        <input type="text" class="form-control" id="cccd">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Giới tính:</label><br>
+                                        <input type="radio" id="male" name="gender" value="NAM"> Nam
+                                        <input type="radio" id="female" name="gender" value="NU"> Nữ
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="dob" class="form-label">Ngày sinh:</label>
+                                        <input type="date" class="form-control" id="dob">
+                                    </div>
+                                </div>
+
+                                <!-- Phần avatar (nửa phải) -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="avatar" class="form-label">Ảnh đại diện:</label>
+                                        <div id="avatarContainer" class="text-center">
+                                            <img id="avatar" src="default-avatar.jpg" alt="Avatar" class="img-fluid rounded-circle" width="150">
+                                        </div>
+                                        <!-- Input chọn ảnh -->
+                                        <input type="file" class="form-control mt-2" id="avatarFile" accept="image/*">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="changePasswordModalLabel">Đổi mật khẩu</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="changePasswordForm">
+                                <div class="mb-3">
+                                    <label for="oldPassword" class="form-label">Mật khẩu cũ</label>
+                                    <input type="password" class="form-control" id="oldPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                                    <input type="password" class="form-control" id="newPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                                    <input type="password" class="form-control" id="confirmPassword" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary" id="changePasswordBtn">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="py-4 bg-light mt-auto"
+                th:include="staff/layout/_footer :: body">
+        </footer>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+
+<script src="../staff/js/js.js"></script>
+<script src="../staff/js/admin-app.js"></script>
+<script src="../staff/js/banhang-ctrl.js"></script>
+<script src="../staff/js/thuonghieu-ctrl.js"></script>
+<script src="../staff/js/danhmuc-ctrl.js"></script>
+<script src="../staff/js/size-ctrl.js"></script>
+<script src="../staff/js/chatlieu-ctrl.js"></script>
+<script src="../staff/js/mausac-ctrl.js"></script>
+<script src="../staff/js/sanpham-ctrl.js"></script>
+<script src="../staff/js/listproduct-ctrl.js"></script>
+<script src="../staff/js/hoadon-ctrl.js"></script>
+<script src="../staff/js/hdct-ctrl.js"></script>
+<script src="../staff/js/khuyenmai-ctrl.js"></script>
+<script src="../staff/js/blog-ctrl.js"></script>
+<script src="../staff/js/quanlyspct-ctrl.js"></script>
+<script src="../staff/js/taikhoan-ctrl.js"></script>
+<script src="../staff/js/group-ctrl.js"></script>
+<script src="../staff/js/test-ctrl.js"></script>
+<script src="../staff/js/apdungkhuyenmai-ctrl.js"></script>
+<script src="../staff/js/doitrahang-ctrl.js"></script>
+<script src="../staff/js/doitrachitiet-ctrl.js"></script>
+<script src="../staff/js/hinhanh-ctrl.js"></script>
+<script src="../staff/js/tongquan-ctrl.js"></script>
+<script src="../staff/js/danhsachspkm-ctrl.js"></script>
+<script src="../staff/js/sanphamdoitra-ctrl.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.9/flatpickr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.js"></script>
+<script>
+    // Hàm kiểm tra quyền truy cập
+    function checkAccess() {
+        const token = localStorage.getItem('token'); // Lấy token từ localStorage
+        const path = window.location.pathname;
+        const hash = window.location.hash;
+
+        // Kiểm tra nếu không có token, hiển thị trang thông báo và yêu cầu đăng nhập
+        if (!token) {
+            showNotificationPage("Bạn chưa đăng nhập, vui lòng đăng nhập lại.", true);
+            return;
+        }
+
+        try {
+            // Giải mã token
+            const decodedToken = jwt_decode(token);
+
+            // Kiểm tra nếu người dùng là ADMIN
+            if (decodedToken.role === 'ADMIN') {
+                // Hiển thị menu Quản trị hệ thống nếu là ADMIN
+                document.getElementById('adminMenu').style.display = 'block';
+                document.getElementById('userRole').innerText = "Admin Ziaza Store";
+            } else {
+                // Ẩn menu nếu không phải ADMIN
+                document.getElementById('adminMenu').style.display = 'none';
+                document.getElementById('tongQuan').style.display = 'none';
+                document.getElementById('voucher').style.display = 'none';
+
+                document.getElementById('userRole').innerText = "Staff Ziaza Store";
+                // Nếu người dùng không phải ADMIN, chặn truy cập vào /staff#!/taikhoan và /staff#!/group
+                if (hash === '#!/taikhoan' || hash === '#!/group' || hash === '#!/tongquan' || hash === '#!/listkhuyenmai' || hash === '#!/danhsachspkm') {
+                    showNotificationPage("Bạn không có quyền truy cập vào trang này.");
+                    return;
+                }
+            }
+
+            // Nếu không phải ADMIN và truy cập vào các trang không hợp lệ, chặn truy cập
+            if ((decodedToken.role !== 'USER' && decodedToken.role !== 'ADMIN') && path.startsWith('/staff')) {
+                showNotificationPage("Bạn không có quyền truy cập vào trang này.");
+                return;
+            }
+
+        } catch (error) {
+            // Nếu token không hợp lệ
+            showNotificationPage("Token không hợp lệ.");
+        }
+    }
+
+    // Hàm hiển thị trang thông báo
+    function showNotificationPage(message, showLoginButton = false) {
+        let content = `
+    <div style="height: 100vh; display: flex; justify-content: center; align-items: center; font-size: 24px; text-align: center; background-color: #fff;">
+        <div>
+            <p>${message}</p>
+    `;
+        if (showLoginButton) {
+            content += `
+        <button onclick="redirectToLogin()" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; cursor: pointer;">Đăng nhập</button>
+    `;
+        }
+        content += `</div></div>`;
+        document.body.innerHTML = content;
+    }
+
+    // Hàm chuyển hướng đến trang đăng nhập
+    function redirectToLogin() {
+        window.location.href = '/v1/auth/login';
+    }
+
+    // Kiểm tra quyền truy cập khi trang được tải (window.onload) và khi hash thay đổi (hashchange)
+    window.onload = checkAccess;
+    window.onhashchange = checkAccess;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        function loadUserInfo(token) {
+            fetch('user/get', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.data && data.data.profile) {
+                        const profile = data.data.profile;
+
+                        document.getElementById("username").value = data.data.userName || '';
+                        document.getElementById("name").value = profile.hoVaTen || '';
+                        document.getElementById("email").value = profile.email || '';
+                        document.getElementById("phone").value = profile.phone || '';
+                        document.getElementById("cccd").value = profile.cccd || '';
+                        document.getElementById("dob").value = profile.ngaySinh || '';
+                        document.getElementById("nameAdmin").textContent = profile.hoVaTen || '';
+
+                        if (profile.gioiTinh === "NAM") {
+                            document.getElementById("male").checked = true;
+                        } else if (profile.gioiTinh === "NU") {
+                            document.getElementById("female").checked = true;
+                        }
+
+                        const avatarSrc = profile.avatar || 'default-avatar.jpg';
+                        document.getElementById("avatar").src = avatarSrc;
+
+                    } else {
+                        alert('Không thể tải thông tin người dùng');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi gọi API:', error);
+                    alert('Đã xảy ra lỗi trong quá trình lấy thông tin người dùng');
+                });
+        }
+
+        // Khi người dùng nhấp vào "Thông tin" trong dropdown
+        document.getElementById("viewInfo").addEventListener("click", function () {
+            var userInfoModal = new bootstrap.Modal(document.getElementById("userInfoModal"));
+            userInfoModal.show();
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                alert("Vui lòng đăng nhập trước!");
+                window.location.href = "v1/auth/login";
+                return;
+            }
+
+            // Gọi hàm để lấy thông tin người dùng
+            loadUserInfo(token);
+        });
+
+        // Xử lý khi người dùng chọn avatar mới
+        document.getElementById("avatarFile").addEventListener("change", function (event) {
+            const file = event.target.files[0]; // Lấy file người dùng chọn
+
+            if (file) {
+                const reader = new FileReader();
+
+                // Khi file được đọc xong
+                reader.onload = function (e) {
+                    const avatarImage = document.getElementById("avatar");
+                    avatarImage.src = e.target.result;  // Cập nhật ảnh avatar mới
+                };
+
+                // Đọc file dưới dạng URL
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("userInfoModal").addEventListener('hidden.bs.modal', function () {
+            document.getElementById("formInfo").reset();  // Reset form khi đóng modal
+        });
+        // Hàm để cập nhật thông tin người dùng
+        function updateUserInfo(token) {
+            const formData = new FormData();
+
+            // Lấy thông tin từ form
+            formData.append("request", JSON.stringify({
+                hoVaTen: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                phone: document.getElementById("phone").value,
+                cccd: document.getElementById("cccd").value,
+                gioiTinh: document.querySelector('input[name="gender"]:checked').value,
+                ngaySinh: document.getElementById("dob").value
+            }));
+
+            // Thêm file avatar nếu có
+            const avatarFile = document.getElementById("avatarFile").files[0];
+            if (avatarFile) {
+                formData.append("file", avatarFile);
+            }
+
+            //call api update
+            fetch('profile/update', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Kết quả cập nhật thông tin:', data);
+                    if (data.code === "200") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Cập nhật thành công!',
+                            text: 'Thông tin của bạn đã được cập nhật.',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            position: 'center',
+                            toast: false,
+                        });
+
+                        loadUserInfo(token);
+                        var userInfoModal = new bootstrap.Modal(document.getElementById("userInfoModal"));
+                        userInfoModal.hide();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Cập nhật thất bại',
+                            text: data.message || 'Đã có lỗi xảy ra, vui lòng thử lại!'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi cập nhật thông tin:', error);
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi hệ thống',
+                        text: 'Đã xảy ra lỗi khi cập nhật thông tin. Vui lòng thử lại sau.'
+                    });
+                });
+        }
+
+        // Xử lý khi người dùng gửi form cập nhật thông tin
+        document.getElementById("formInfo").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const token = localStorage.getItem("token");
+
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn cập nhật thông tin?',
+                text: "Thông tin sẽ được cập nhật ngay lập tức!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Cập nhật',
+                cancelButtonText: 'Hủy bỏ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    updateUserInfo(token);
+                }
+            });
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("changePasswordLink").addEventListener("click", function () {
+            new bootstrap.Modal(document.getElementById("changePasswordModal")).show();
+        });
+
+        // Xử lý gửi yêu cầu đổi mật khẩu khi người dùng nhấn Cập nhật
+        document.getElementById("changePasswordBtn").addEventListener("click", function () {
+            const oldPassword = document.getElementById("oldPassword").value;
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            // Kiểm tra nếu mật khẩu mới và xác nhận mật khẩu không khớp
+            if (newPassword !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Mật khẩu mới không khớp',
+                    text: 'Vui lòng xác nhận lại mật khẩu mới.'
+                });
+                return;
+            }
+
+            // Kiểm tra nếu mật khẩu cũ không hợp lệ
+            if (!oldPassword || !newPassword || !confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Vui lòng nhập đầy đủ thông tin',
+                    text: 'Các trường mật khẩu không được để trống.'
+                });
+                return;
+            }
+
+            const token = localStorage.getItem("token");
+            const changePasswordModel = {
+                oldPassword: oldPassword,
+                password: newPassword,
+                retypePassword: confirmPassword
+            };
+
+            // Gửi request POST để đổi mật khẩu
+            fetch('auth/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(changePasswordModel)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.code === "200") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Cập nhật mật khẩu thành công',
+                            text: 'Mật khẩu của bạn đã được thay đổi.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        // Đóng modal
+                        document.getElementById("changePasswordModal").querySelector('.btn-close').click();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Cập nhật mật khẩu thất bại',
+                            text: data.message || 'Đã có lỗi xảy ra, vui lòng thử lại!'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi đổi mật khẩu:', error);
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi hệ thống',
+                        text: 'Đã xảy ra lỗi khi đổi mật khẩu. Vui lòng thử lại sau.'
+                    });
+                });
+        });
+        document.getElementById("changePasswordModal").addEventListener('hidden.bs.modal', function () {
+            document.getElementById("changePasswordForm").reset();
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("logoutLink").addEventListener("click", function () {
+            localStorage.removeItem("token");
+
+            window.location.href = "v1/auth/login";
+        });
+    });
+
+
+</script>
+</body>
+</html>

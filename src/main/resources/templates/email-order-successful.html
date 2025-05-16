@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Hàng Thành Công</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        .order-details {
+            margin-top: 20px;
+        }
+        .order-item {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .order-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .price {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-container">
+    <h2>Chào <span th:text="${name}"></span>,</h2>
+    <p>Cảm ơn bạn đã đặt hàng tại <span th:text="${companyName}"></span>!</p>
+    <p>Chúng tôi đã nhận được đơn hàng của bạn và sẽ chuẩn bị giao hàng trong thời gian sớm nhất.</p>
+
+    <div class="order-details">
+        <h3>Thông tin đơn hàng</h3>
+
+        <!-- Lặp qua các sản phẩm trong đơn hàng -->
+        <div th:each="item : ${products}" class="order-item">
+            <img th:src="@{'http://localhost:8080/images/' + ${item.anh}}" alt="Sản phẩm">
+            <div>
+                <p><strong th:text="${item.ten}">Tên sản phẩm</strong></p>
+                <p>Size: <span th:text="${item.size}">Size</span>, Màu: <span th:text="${item.mauSac}">Màu</span></p>
+                <p class="price" th:text="${item.gia}">Giá</p>
+                <p>Số lượng: <span th:text="${item.soLuong}">Số lượng</span></p>
+            </div>
+        </div>
+
+        <p><strong>Tổng tiền:</strong> <span th:text="${tongTien}">Giá trị tổng tiền</span></p>
+        <p><strong>Ngày đặt hàng:</strong> <span th:text="${orderDate}">Ngày đặt hàng</span></p>
+    </div>
+
+
+    <div class="footer">
+        <p>Để biết thêm thông tin, vui lòng liên hệ với chúng tôi qua email: <span th:text="${companyContact}"></span></p>
+        <p>Trân trọng, <br>Đội ngũ <span th:text="${companyName}"></span></p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,185 @@
+<div class="container-fluid px-4">
+    <h2 class="mt-4">Danh sách sản phẩm đổi trả</h2><br>
+
+    <!--    <nav aria-label="breadcrumb">-->
+    <!--        <ol class="breadcrumb">-->
+    <!--            <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>-->
+    <!--            <li class="breadcrumb-item active" aria-current="page">Khác</li>-->
+    <!--            <li class="breadcrumb-item"><a href="#!/listsanphaman">Sản phẩm ẩn</a></li>-->
+    <!--        </ol>-->
+    <!--    </nav>-->
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-table me-1"></i>
+                Danh sách sản phẩm đổi trả
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                <input type="text" ng-model="searchText" placeholder="Tìm kiếm..." class="form-control me-2"
+                       ng-change="pager.updateItems()"/>
+                <select ng-model="trangThai" class="form-control me-2" ng-change="pager.updateItems()">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="0">Chờ kiểm tra</option>
+                    <option value="1">Hoàn tác</option>
+                    <option value="2">Sản phẩm lỗi</option>
+                </select>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>STT</th>
+                    <th>Ảnh</th>
+                    <th>Mã SP</th>
+                    <th>Tên</th>
+                    <th>Size</th>
+                    <th>Màu sắc</th>
+                    <th>Số lượng</th>
+                    <th>Trạng thái</th>
+                    <th>Chức năng</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in pager.items | filter: searchText | filter: filterByAttributes">
+                    <td>{{$index + 1 + (pager.page * pager.size)}}</td>
+                    <td>
+                        <img ng-src="/images/{{item.sanPhamChiTietModel.sanPham.anh}}" alt="Ảnh sản phẩm"
+                             style="width: 50px; height: 50px; object-fit: cover;"/>
+                    </td>
+                    <td>{{item.sanPhamChiTietModel.sanPham.ma}}</td>
+                    <td>{{item.sanPhamChiTietModel.sanPham.ten}}</td>
+                    <td>{{item.sanPhamChiTietModel.size.ten}}</td>
+                    <td>{{item.sanPhamChiTietModel.mauSac.ten}}</td>
+                    <td>{{item.soLuong}}</td>
+                    <td>
+                        <div class="badge"
+                             ng-class="{'bg-primary': item.trangThai === 0, 'bg-success': item.trangThai === 1, 'bg-danger': item.trangThai === 2}">
+                            <span ng-if="item.trangThai === 0">Chờ kiểm tra</span>
+                            <span ng-if="item.trangThai === 1">Hoàn tác</span>
+                            <span ng-if="item.trangThai === 2">Sản phẩm lỗi</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-xs">
+                            <button class="btn btn-link" ng-if="item.trangThai === 0"
+                                    type="button" ng-click="undoSanPham(item.id)">
+                                <i class="fas fa-check"></i>
+                            </button>
+                            <button class="btn btn-link" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal" ng-click="edit(item)">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                            <button class="btn btn-link" ng-if="item.trangThai === 0" type="button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#huyYeuCau"
+                                    ng-click="openModal(item.id)">
+                                <i class="fas fa-times icon-close"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="panel-footer d-flex justify-content-between align-items-center">
+                <div class="me-auto">
+                    <label for="pageSizeSelect" class="me-2">Hiển thị:</label>
+                    <select id="pageSizeSelect" ng-model="pager.size" ng-change="pager.updateItems()"
+                            class="form-select d-inline-block w-auto">
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <div class="text-center">
+                    <button ng-click="pager.first()" class="btn btn-danger">
+                        <i class="fas fa-angle-double-left"></i>
+                    </button>
+                    <button ng-click="pager.prev()" class="btn btn-primary">
+                        <i class="fas fa-angle-left"></i>
+                    </button>
+                    <button class="btn btn-success">{{pager.page + 1}} of {{pager.count}}</button>
+                    <button ng-click="pager.next()" class="btn btn-primary">
+                        <i class="fas fa-angle-right"></i>
+                    </button>
+                    <button ng-click="pager.last()" class="btn btn-danger">
+                        <i class="fas fa-angle-double-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thông tin sản phẩm đổi trả</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid px-4">
+                        <div class="row">
+                            <div class="col-md-4 mt-2">
+                                <div class="image-preview d-flex justify-content-center align-items-center p-2"
+                                     style="border: 1px dashed #ddd; height: 200px;">
+                                    <img ng-src="/images/{{ form.sanPhamChiTietModel.sanPham.anh }}" alt="Ảnh sản phẩm"
+                                         style="max-height: 100%; object-fit: cover;"/>
+                                </div>
+                            </div>
+                            <div class="col-md-8 mt-2">
+                                <!-- Thông tin khác của sản phẩm -->
+                                <label>Mã sản phẩm</label>
+                                <input type="text" class="form-control" ng-model="form.sanPhamChiTietModel.sanPham.ma" disabled>
+                                <label>Tên sản phẩm</label>
+                                <input type="text" class="form-control" ng-model="form.sanPhamChiTietModel.sanPham.ten" disabled>
+                                <label>Giá sản phẩm</label>
+                                <input type="number" class="form-control" ng-model="form.sanPhamChiTietModel.sanPham.gia" disabled>
+                                <label>Lý do</label>
+                                <textarea class="form-control" ng-model="form.lyDo" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="huyYeuCau" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen-sm-down">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hủy yêu cầu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid px-4">
+                        <div class="form-floating">
+                                <textarea class="form-control" ng-model="selectedGhiChu"
+                                          placeholder="Leave a comment here" id="floatingTextarea2"
+                                          style="height: 100px"></textarea>
+                            <label for="floatingTextarea2">Ghi chú</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times"></i> Đóng
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="updateCancelOrder()">
+                            <i class="fas fa-times icon-close"></i> Xác nhận
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

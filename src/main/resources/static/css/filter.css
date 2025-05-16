@@ -1,0 +1,357 @@
+/* CSS */
+#category-tree ul {
+    list-style-type: none;
+    padding-left: 20px; /* Để các danh mục con thụt vào */
+    margin: 0; /* Loại bỏ khoảng cách mặc định của ul */
+}
+
+.category-item {
+    margin-bottom: 10px;
+}
+
+.category-item span {
+    /*font-weight: bold;*/
+    margin-left: 10px;
+    display: inline-block; /* Đảm bảo rằng span và checkbox không nằm ngang */
+}
+
+.category-item input[type="checkbox"] {
+    margin-right: 10px; /* Khoảng cách giữa checkbox và tên danh mục */
+    transform: scale(1.2); /* Làm checkbox to hơn một chút */
+}
+
+.category-item .children {
+    display: none; /* Ẩn danh mục con mặc định */
+    padding-left: 20px; /* Thụt vào để phân biệt các danh mục con */
+    margin-top: 5px; /* Khoảng cách giữa danh mục cha và con */
+}
+
+.category-item .children.hidden {
+    display: none;
+}
+
+.category-item .children:not(.hidden) {
+    display: block; /* Hiển thị danh mục con khi có sự kiện click */
+    transition: all 0.3s ease-in-out; /* Thêm hiệu ứng khi mở/đóng danh mục con */
+}
+
+/* Thêm mũi tên cho danh mục có con */
+.category-item span.has-children {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.category-item span.has-children i {
+    margin-left: 10px;
+    transition: transform 0.3s ease-in-out; /* Thêm hiệu ứng xoay mũi tên */
+}
+
+/*.category-item input[type="checkbox"]:checked + span {*/
+/*    !*color: blue; !* Đổi màu khi checkbox được chọn *!*!*/
+/*}*/
+
+/* Hiệu ứng cho mũi tên */
+.category-item span.has-children i.bi-chevron-down {
+    transform: rotate(0deg);
+}
+
+.category-item span.has-children i.bi-chevron-up {
+    transform: rotate(180deg);
+}
+
+.category-item span.has-children {
+    font-size: 16px; /* Cỡ chữ cho tên danh mục cha */
+    /*font-weight: bold;*/
+}
+
+.category-item span {
+    font-size: 14px; /* Cỡ chữ cho tên danh mục con */
+}
+
+/* Cải thiện giao diện cho checkbox */
+.category-item input[type="checkbox"] {
+    border-radius: 3px;
+    border: 2px solid #007bff;
+    padding: 5px;
+    background-color: #fff;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Khoảng cách giữa các checkbox */
+}
+
+.form-check-input {
+    margin-right: 10px; /* Khoảng cách giữa checkbox và nhãn */
+    width: 16px;  /* Kích thước checkbox */
+    height: 16px; /* Kích thước checkbox */
+    border: 2px solid #007bff; /* Viền đơn giản, màu xanh dương */
+    border-radius: 3px; /* Bo góc nhẹ */
+    appearance: none; /* Xóa kiểu mặc định của checkbox */
+    background-color: #fff; /* Nền trắng cho checkbox */
+    cursor: pointer; /* Thêm con trỏ khi hover */
+    transition: background-color 0.2s ease, border-color 0.2s ease; /* Thêm hiệu ứng chuyển màu */
+}
+
+/* Khi checkbox được chọn */
+.form-check-input:checked {
+    background-color: #007bff; /* Màu nền xanh dương khi chọn */
+    border: 2px solid #007bff; /* Viền xanh dương khi chọn */
+}
+
+/* Khi checkbox chưa chọn */
+.form-check-input:not(:checked) {
+    background-color: #fff; /* Nền trắng khi chưa chọn */
+    border: 2px solid #ccc; /* Viền xám nhạt khi chưa chọn */
+}
+
+/* Tên của checkbox */
+.form-check-label {
+    font-size: 16px; /* Cỡ chữ 16px */
+    margin-left: 10px; /* Khoảng cách giữa checkbox và tên */
+    cursor: pointer; /* Thêm con trỏ khi hover */
+}
+/* Cấu trúc chung cho các sản phẩm */
+.product-card {
+    /*border: 1px solid #ddd;*/
+    /*border-radius: 8px;*/
+    overflow: hidden;
+    /*box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Hiệu ứng khi hover lên sản phẩm */
+/*.product-card:hover {*/
+/*    transform: translateY(-10px);*/
+/*    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);*/
+/*}*/
+
+/* Phần hình ảnh */
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+    transition: transform 0.3s ease;
+}
+
+/*.product-card:hover img {*/
+/*    transform: scale(1.05);*/
+/*}*/
+
+/* Thẻ thông tin sản phẩm */
+.product-card .card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    height: 50px;  /* Đảm bảo không bị thay đổi chiều cao khi có tên dài */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.price {
+    font-size: 22px;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Nút mua ngay */
+.btn-buy {
+    font-size: 1rem;
+    padding: 10px;
+    background-color: #000; /* Màu nền đen */
+    border: none;
+    color: white; /* Màu chữ trắng */
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+/* Hiệu ứng hover cho nút mua ngay */
+/*.btn-buy:hover {*/
+/*    background-color: #333; !* Màu nền đen đậm khi hover *!*/
+/*    transform: scale(1.05); !* Phóng to nhẹ khi hover *!*/
+/*}*/
+
+
+/* Icon yêu thích */
+.icon-heart {
+    font-size: 24px;
+    color: #e74c3c;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.icon-heart:hover {
+    color: #c0392b;
+}
+
+/* Kích thước chung cho các cột */
+.product {
+    flex: 0 0 24%;  /* Mỗi sản phẩm chiếm 1/4 chiều rộng (4 sản phẩm trên 1 hàng) */
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+/* Đảm bảo sản phẩm trong các cột đều có chiều cao giống nhau */
+.product-card .card-body {
+    height: 240px; /* Tạo chiều cao cố định cho các sản phẩm */
+}
+
+/* Thêm hiệu ứng hover cho các sản phẩm */
+/*.product-card:hover {*/
+/*    transform: scale(1.05); !* Mở rộng nhẹ khi hover *!*/
+/*    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); !* Tăng độ bóng khi hover *!*/
+/*}*/
+
+/* Responsive cho các thiết bị di động */
+@media (max-width: 768px) {
+    .product {
+        flex: 0 0 48%; /* Hiển thị 2 sản phẩm mỗi hàng trên màn hình nhỏ */
+    }
+
+    .product-card img {
+        height: 180px;  /* Điều chỉnh chiều cao ảnh cho các thiết bị nhỏ hơn */
+    }
+
+    .card-title {
+        font-size: 1rem;  /* Giảm kích thước font tiêu đề cho các thiết bị nhỏ hơn */
+    }
+
+    .price {
+        font-size: 1rem;  /* Giảm kích thước font giá cho các thiết bị nhỏ hơn */
+    }
+
+    .btn-buy {
+        font-size: 0.9rem;
+    }
+
+    .icon-heart {
+        font-size: 22px;
+    }
+}
+
+/* Nếu bạn muốn điều chỉnh thêm cho các màn hình nhỏ, có thể thay đổi như sau: */
+@media (max-width: 768px) {
+    .product {
+        flex: 0 0 48%;  /* Hiển thị 2 sản phẩm mỗi hàng trên màn hình nhỏ */
+    }
+}
+
+@media (max-width: 576px) {
+    .product {
+        flex: 0 0 100%;  /* Hiển thị 1 sản phẩm mỗi hàng trên màn hình rất nhỏ */
+    }
+}
+/* Giá cũ (gạch ngang và chữ nhỏ) */
+.price.old-price {
+    font-size: 22px;  /* Chữ nhỏ */
+    color: black;  /* Màu xám cho giá cũ */
+    text-decoration: line-through; /* Gạch ngang */
+    margin-bottom: 5px;  /* Khoảng cách nhỏ giữa giá cũ và giá mới */
+}
+
+/* Giá mới (nổi bật) */
+.price.new-price {
+    font-size: 22px;  /* Chữ lớn hơn cho giá mới */
+    color: #e74c3c;  /* Màu đỏ cho giá khuyến mãi */
+    font-weight: bold;  /* In đậm để làm nổi bật giá mới */
+}
+/* Đảm bảo card có chiều cao cố định để các phần tử bên trong có thể căn chỉnh dễ dàng */
+.product-card {
+    display: flex;
+    flex-direction: column;  /* Đặt các phần tử trong card theo chiều dọc */
+    height: 100%;  /* Chiều cao đầy đủ của card */
+    /*box-sizing: border-box;*/
+}
+
+/* Phần nội dung trên cùng của sản phẩm */
+.card-body {
+    flex: 1;  /* Phần nội dung sẽ chiếm hết không gian còn lại trong card */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  /* Giữ khoảng cách giữa các phần tử */
+}
+
+/* Căn chỉnh nút Mua ngay và biểu tượng yêu thích xuống dưới */
+.d-flex.justify-content-between.align-items-center {
+    margin-top: auto;  /* Đẩy các phần tử xuống dưới */
+}
+
+.sale-tag {
+    position: absolute;
+    top: 10px;  /* Khoảng cách từ đỉnh của ảnh */
+    right: 10px;  /* Khoảng cách từ cạnh phải của ảnh */
+    background-color: #e74c3c;  /* Màu nền đỏ */
+    color: white;  /* Màu chữ trắng */
+    font-size: 1.2rem;  /* Kích thước chữ */
+    font-weight: bold;
+    padding: 5px 10px;  /* Khoảng cách giữa chữ và viền */
+    border-radius: 5px;  /* Bo góc cho thẻ SALE */
+    z-index: 10;  /* Đảm bảo thẻ "SALE" nằm trên hình ảnh */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);  /* Thêm bóng đổ cho chữ SALE */
+}
+
+/* Hiệu ứng hover cho "SALE" */
+.sale-tag:hover {
+    background-color: #c0392b;  /* Màu đỏ đậm hơn khi hover */
+    cursor: pointer;
+}
+.hot-sale-badge {
+    position: absolute;
+    top: 30px;
+    right: -40px;
+    padding: 5px;
+    animation: blink 1s infinite;  /* Hiệu ứng nhấp nháy */
+}
+
+
+/* Điều chỉnh kích thước của ảnh động hoặc icon */
+.hot-sale-badge img {
+    width: 70px;  /* Điều chỉnh kích thước của ảnh động hoặc icon */
+    height: auto;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Hoặc chiều cao bạn muốn cho ảnh */
+    overflow: hidden;  /* Đảm bảo không có phần thừa ra ngoài */
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;  /* Giữ tỷ lệ ảnh và đảm bảo ảnh luôn nằm gọn trong div */
+}
+
+/* Ghim sidebar khi cuộn */
+.filter-box {
+    position: sticky;
+    top: 20px; /* Khoảng cách từ phía trên khi dính */
+    z-index: 100; /* Đảm bảo nó nằm trên các phần tử khác nếu cần */
+    background: white; /* Đặt nền trắng để không bị trong suốt */
+    padding: 20px;
+    /*border: 1px solid #ccc;*/
+    /*border-radius: 8px;*/
+}
+
+.form-check {
+    width: 50%;
+    display: inline-block;
+}
+.filter-group h5{
+    margin-bottom: 10px;
+}

@@ -1,0 +1,391 @@
+/* Reset các margin và padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Cấu trúc tổng thể */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f5;
+    margin: 0; /* Loại bỏ margin mặc định */
+    box-sizing: border-box;
+    animation: fadeIn 1s ease-out; /* Thêm hiệu ứng fadeIn cho toàn bộ trang */
+}
+footer {
+    background-color: #000; /* Màu nền đen */
+    color: #fff; /* Màu chữ trắng để dễ đọc */
+    padding: 20px 0; /* Thêm khoảng cách cho footer */
+    text-align: center; /* Căn giữa nội dung trong footer */
+}
+
+/* Header */
+/* Header */
+.header {
+    background-color: #222;
+    color: #fff;
+    text-align: center;
+    padding: 50px 0;
+    margin: 0;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards 0.3s;
+}
+
+/* Button trong Header */
+.header .btn {
+    position: absolute; /* Đặt button ở vị trí tuyệt đối */
+    left: 20px; /* Căn từ phía trái */
+    top: 50%; /* Căn vào giữa chiều cao */
+    transform: translateY(-50%); /* Cân bằng vị trí button với chiều cao */
+    background-color: #ff7f50;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hiệu ứng khi di chuột qua */
+.header .btn:hover {
+    background-color: #ff5722;
+    transform: translateY(-50%) translateX(-5px); /* Di chuyển một chút khi hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Hiệu ứng khi nhấn (active state) */
+.header .btn:active {
+    transform: translateY(-50%) translateY(2px); /* Di chuyển xuống khi nhấn */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Header nội dung */
+.header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 1.2rem;
+}
+
+/* Container */
+.container {
+    max-width: 1600px; /* Đặt chiều rộng tối đa cho container */
+    margin: 0 auto; /* Căn giữa container */
+    padding: 20px; /* Thêm padding cho container nếu cần */
+    opacity: 0; /* Ẩn container ban đầu */
+    animation: fadeIn 1s ease-out forwards 0.5s; /* Áp dụng hiệu ứng fadeIn với độ trễ */
+}
+
+/* Phần Giới Thiệu */
+.about-us {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 0;
+    background-color: #fff;
+    flex-direction: column; /* Để tránh hình ảnh và văn bản bị chồng lên nhau trên các màn hình nhỏ */
+    opacity: 0; /* Ẩn phần giới thiệu ban đầu */
+    animation: fadeIn 1s ease-out forwards 0.6s; /* Áp dụng hiệu ứng fadeIn với độ trễ */
+}
+
+.about-us h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.about-us .about-text {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.about-us .about-img {
+    width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng */
+    margin-top: 20px;
+}
+
+.about-us .about-img img {
+    width: 100%; /* Chiều rộng của hình ảnh sẽ chiếm 100% chiều rộng của container */
+    height: auto; /* Đảm bảo hình ảnh giữ đúng tỷ lệ */
+    border-radius: 10px; /* Làm tròn các góc hình ảnh */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Thêm bóng cho hình ảnh */
+    animation: fadeIn 1s ease-out forwards 0.7s; /* Áp dụng hiệu ứng fadeIn với độ trễ */
+}
+
+/* Phần Sứ Mệnh và Giá Trị */
+.mission-values {
+    background-color: #f0f0f0;
+    padding: 50px 0;
+    opacity: 0; /* Ẩn phần sứ mệnh ban đầu */
+    animation: fadeIn 1s ease-out forwards 0.8s; /* Áp dụng hiệu ứng fadeIn với độ trễ */
+}
+
+.mission-values h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.mission-values .value-item {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: slideIn 1s ease-out forwards 1s; /* Thêm hiệu ứng slideIn cho các mục giá trị */
+}
+
+/* Phần Đội Ngũ */
+.team {
+    background-color: #fff;
+    padding: 50px 0;
+    opacity: 0; /* Ẩn đội ngũ ban đầu */
+    animation: fadeIn 1s ease-out forwards 1.2s; /* Áp dụng hiệu ứng fadeIn với độ trễ */
+}
+
+.team h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.team .team-members {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.team .member {
+    text-align: center;
+    width: 200px;
+    opacity: 0; /* Ẩn từng thành viên ban đầu */
+    animation: fadeIn 1s ease-out forwards 1.5s; /* Áp dụng hiệu ứng fadeIn với độ trễ */
+}
+
+.team .member img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Phần Liên Hệ */
+.contact-us {
+    background-color: #fff;
+    padding: 50px 0;
+    opacity: 0; /* Ẩn phần liên hệ ban đầu */
+    animation: fadeIn 1s ease-out forwards 1.7s; /* Áp dụng hiệu ứng fadeIn với độ trễ */
+}
+
+.contact-us button {
+    background-color: #222;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Hiệu ứng động */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes slideIn {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(0); }
+}
+/* Modal Background */
+.modal {
+    display: none; /* Modal ẩn mặc định */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền tối cho modal */
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    position: relative;
+    margin: 10% auto;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+/* Close Button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #222;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #ff5722;
+}
+
+
+.info-item i {
+    font-size: 2rem;
+    margin-right: 15px;
+    /* Màu icon dựa trên ứng dụng */
+}
+
+/* Info Item */
+.info-item {
+    background-color: #f9f9f9;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;  /* Đặt flexbox cho .info-item */
+    align-items: center;  /* Căn giữa các phần tử con theo chiều dọc */
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+    gap: 10px;  /* Thêm khoảng cách giữa các phần tử trong .info-item */
+}
+
+/* Căn giữa nội dung của h4 */
+.info-item h4 {
+    font-size: 1.2rem;
+    color: #222;
+    margin: 0;
+    display: flex;  /* Dùng flexbox để căn giữa chữ */
+    align-items: center;  /* Căn giữa theo chiều dọc */
+    justify-content: flex-start; /* Căn trái */
+    margin-right: 15px; /* Khoảng cách giữa h4 và p */
+}
+
+/* Căn chỉnh nội dung của p */
+.info-item p {
+    font-size: 1rem;
+    color: #555;
+    margin: 0;
+    display: flex;
+    align-items: center;  /* Căn giữa theo chiều dọc */
+}
+
+/* Hiệu ứng fadeIn */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+
+/* Màu sắc cho từng icon */
+.info-item .fa-envelope {
+    color: #D44638; /* Màu của Email */
+}
+
+.info-item .fa-phone-alt {
+    color: #25D366; /* Màu của hotline (WhatsApp) */
+}
+
+.info-item .fab.fa-facebook {
+    color: #1877F2; /* Màu của Facebook */
+}
+
+.info-item .fab.fa-whatsapp {
+    color: #0088cc; /* Màu của Zalo */
+}
+
+
+/* Button Styling */
+button {
+    background-color: #ff7f50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #ff5722;
+}
+
+/* Animation for modal opening */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* Animation for modal slide up */
+@keyframes slideUp {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* Animation for info-item */
+@keyframes infoFadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+/* Cài đặt các hiệu ứng */
+.fadeIn {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}
+
+.slideInUp {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+/* Khi phần tử xuất hiện trong viewport */
+.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.store-address {
+    background-color: #f4f4f4; /* Màu nền nhẹ */
+    padding: 40px 0;
+    text-align: center;
+}
+
+.store-address h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.store-address p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.store-address .map iframe {
+    margin-top: 20px;
+    max-width: 100%;
+    border-radius: 8px;
+}
+

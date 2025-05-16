@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml" lang="vi-VN" dir="LTR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <title>Product Detail</title>
+    <link rel="stylesheet" href="/css/headerAll.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.js"></script>
+
+    <script src="/js/headerJs.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="../css/home.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/review.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/productDetail.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+            integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode/build/jwt-decode.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Thêm Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+
+    <!-- Thêm Toastr JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="/js/main.js"></script>
+
+    <!--    <script src="/js/product.js"></script>-->
+    <script src="/js/home.js"></script>
+
+    <style>
+
+    </style>
+</head>
+<body>
+<div th:include="header-all :: body"></div>
+<main>
+    <div class="container mt-5">
+
+        <div class="row">
+            <!-- Slide hình ảnh (cột bên trái) -->
+            <div class="col-md-8">
+                <div class="row image-wrapper">
+                    <div class="col-md-2">
+                        <div class="d-flex flex-column align-items-center">
+                            <!-- Nút cuộn lên -->
+                            <button class="btn btn-dark mb-2" id="thumbnailPrevBtn" style="width: 60%; justify-content: center">
+                                <i class="fa fa-chevron-up"></i>
+                            </button>
+
+                            <div id="thumbnailImagesWrapper" class="d-flex flex-column overflow-hidden"
+                                 style="max-height: 600px;">
+                                <div id="thumbnailImages" class="d-flex flex-column"></div>
+                            </div>
+
+                            <!-- Nút cuộn xuống -->
+                            <button class="btn btn-dark mt-2" id="thumbnailNextBtn" style="width: 60%; justify-content: center">
+                                <i class="fa fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10">
+                        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner" id="productImages">
+                                <!-- Các ảnh sẽ được chèn vào đây bằng JavaScript -->
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselExampleAutoplaying"
+                                    data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselExampleAutoplaying"
+                                    data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form sản phẩm (cột bên phải) -->
+            <div class="col-md-4 shadow-container">
+                <form id="productForm" action="">
+                    <!-- Tên sản phẩm -->
+                    <h1 class="mt-2" id="productName"></h1>
+                    <hr>
+                    <br>
+                    <p class="fs-5">
+                        <span class="text-dark me-3" id="productPrice"></span>
+                        <span class="text-danger me-3" id="productSalePrice"></span>
+                        <del class="text-muted" id="productOldPrice"></del>
+                    </p>
+
+                    <!-- Giá sản phẩm -->
+                    <input type="hidden" name="price_product" id="priceProduct"><br>
+                    <!-- Tùy chọn màu sắc -->
+                    <div class="mt-2 fs-5">
+                        <label class="product-color">MÀU SẮC</label><br>
+                        <div id="colorOptions"></div>
+                    </div>
+
+                    <!-- Tùy chọn kích thước -->
+                    <div class="mt-2 fs-5">
+                        <label class="product-color">KÍCH THƯỚC</label><br>
+                        <div id="sizeOptions"></div>
+                        <input type="hidden" id="selectedSizeInput" name="size" value="">
+                    </div>
+                    <br>
+                    <!-- Nhập số lượng -->
+                    <div class="d-flex align-items-center">
+                        <div class="input-group w-auto">
+                            <button class="btn btn-light" type="button" id="decreaseQuantity"
+                                    style="border: 1px solid black">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <input style="width: 80px; border: 1px solid black;" type="number"
+                                   class="form-control text-center"
+                                   id="quantityInput"
+                                   value="1" min="1"/>
+                            <button class="btn btn-light" type="button" id="increaseQuantity"
+                                    style="border: 1px solid black">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hiển thị số lượng còn lại -->
+                    <div id="availableQuantity" class="mt-2">
+                        <label style="font-weight: bold">SỐ LƯỢNG SẢN PHẨM CÒN: <span id="quantityLeft"></span> </label>
+                    </div>
+
+                    <!-- Hiển thị tổng tiền -->
+                    <div id="total_price" class="mb-2" style="display:none;">
+                        Tổng tiền: <span id="totalPriceValue"></span> VND
+                    </div>
+                    <hr>
+
+                    <!-- Nút hành động -->
+                    <div class="button-buy-product">
+                        <button type="button" class="btn btn-dark btn-buy" id="buyButton">MUA NGAY</button>
+                        <button type="button" class="btn btn-dark btn-addcart" id="addToCartButton">THÊM VÀO GIỎ HÀNG
+                        </button>
+                    </div>
+                    <div class="button-add-wislist">
+                        <button data-product-id="${product.id}" type="button" class="btn btn-light btn-buy"
+                                id="addWislist" style="border: 1px solid black">YÊU THÍCH
+                        </button>
+                    </div>
+
+                    <hr>
+
+                    <!-- Mô tả sản phẩm -->
+                    <ul>
+                        <li><b>Mô tả ngắn:</b> <span id="productDescription"></span></li>
+                        <li><b>Thương hiệu:</b> <span id="productBrand"></span></li>
+                        <li><b>Mã sản phẩm:</b> <span id="productCode"></span></li>
+                    </ul>
+
+                </form>
+                <hr>
+            </div>
+        </div>
+
+        <div class="container d-flex align-items-center justify-content-center">
+            <div class="mt-5 col-md-10 text-detail">
+                <h1 style="text-align: center">HƯỚNG DẪN CHỌN SIZE <p>Sai số 1-2 cm/kg</p></h1>
+                <table class="mt-4" style="text-align: center;">
+                    <tr>
+                        <th>Chiều cao</th>
+                        <th>Cân nặng</th>
+                        <th>Size</th>
+                    </tr>
+                    <tr>
+                        <td>1m54-1m59</td>
+                        <td>42kg-47kg</td>
+                        <td>XS</td>
+                    </tr>
+                    <tr>
+                        <td>1m60-1m64</td>
+                        <td>48kg-53kg</td>
+                        <td>S</td>
+                    </tr>
+                    <tr>
+                        <td>1m65-1m68</td>
+                        <td>53kg-60kg</td>
+                        <td>M</td>
+                    </tr>
+                    <tr>
+                        <td>1m70-1m75</td>
+                        <td>61kg-68kg</td>
+                        <td>L</td>
+                    </tr>
+                    <tr>
+                        <td>trên 1m75</td>
+                        <td>69kg-75kg</td>
+                        <td>XL</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>trên 75kg</td>
+                        <td>XXL</td>
+                    </tr>
+                </table>
+
+                <p>ZIAZA STORE CAM KẾT về sản phẩm của mình</p>
+                <p>- Sản phẩm FORM CHUẨN - GIÁ TỐT - HÀNG SẴN - GIAO NHANH </p>
+                <p>- Hình ảnh 100% là ảnh thật của sản phẩm</p>
+                <p>- Chính sách kiểm tra sản phẩm trước khi nhận, đúng mẫu đúng sản phẩm mới nhận</p>
+                <p>- Hỗ trợ đổi sản phẩm khi không đúng size, màu sắc và muốn thay đổi size màu sắc</p>
+                <p>- Hỗ trợ trả sản phẩm nếu sản phẩm lỗi, gặp vấn đề, ...</p>
+                <p>LỜI MUỐN NÓI</p>
+                <p>ZIAZA STORE cảm ơn bạn đã ủng hộ shop, chúc quý khách hàng có 1 ngày tốt lành!</p>
+            </div>
+        </div>
+        <div class="container features-section my-5">
+            <div class="row">
+                <div class="col-md-3">
+                    <i class="features-icon bi bi-truck"></i>
+                    <h5>Giao hàng nhanh chóng</h5>
+                    <p>Freeship với đơn hàng có giá trị trên 500.000đ</p>
+                </div>
+                <div class="col-md-3">
+                    <i class="features-icon bi bi-gift"></i>
+                    <h5>Vô vàn quà tặng</h5>
+                    <p>Hàng trăm mã coupon giảm giá mỗi ngày</p>
+                </div>
+                <div class="col-md-3">
+                    <i class="features-icon bi bi-box-seam"></i>
+                    <h5>Dễ dàng đổi trả</h5>
+                    <p>Dễ dàng đổi trả</p>
+                </div>
+                <div class="col-md-3">
+                    <i class="features-icon bi bi-people"></i>
+                    <h5>Hỗ trợ 24/7</h5>
+                    <p>Đội ngũ bán hàng trực tuyến luôn sẵn sàng hỗ trợ bạn</p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h2 class="title text-center" style="margin-top: 83px">CÓ LẼ BẠN SẼ THÍCH</h2>
+        </div>
+        <div id="sanphambanchay" class="product-list spbc d-flex justify-content-start flex-wrap my-5">
+
+        </div>
+
+<!--        <div>-->
+<!--            <h2 class="title text-center" style="margin-top: 83px">SẢN PHẨM MỚI</h2>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Sản phẩm &ndash;&gt;-->
+<!--        <div id="product-info" class="spbc d-flex justify-content-start flex-wrap my-5">-->
+
+<!--        </div>-->
+    </div>
+</main>
+<div th:include="footer::body"></div>
+<!--<script src="/js/prodcutDetail.js"></script>-->
+<!-- Thông báo không có token -->
+<div id="tokenWarning" class="alert alert-warning fixed-top w-100" role="alert" style="display: none; z-index: 1050;">
+    <div class="container text-center">
+        <div class="alert alert-warning alert-dismissible fade show" role="alert" style="font-size: 24px;">
+            <strong>Cảnh báo!</strong> Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục.
+            <button type="button" class="btn-close" id="closeTokenWarning" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xác nhận -->
+<div id="confirmModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <h3>Xác nhận thêm vào giỏ hàng</h3>
+        <p>Bạn có chắc chắn muốn thêm sản phẩm vào giỏ hàng?</p>
+        <div class="modal-actions">
+            <button id="confirmAddToCart" class="btn-confirm">Xác nhận</button>
+            <button id="cancelAddToCart" class="btn-cancel">Hủy</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+</body>
+</html>
